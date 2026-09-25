@@ -40,7 +40,25 @@ function filter(f){filterName=f;toast(f+" filter selected");renderPreview()}
 function aspect(a){if(!file)return toast("Choose a photo first");const st=$("stage");st.dataset.aspect=a;st.style.aspectRatio=a==="1:1"?"1/1":a==="4:5"?"4/5":a==="16:9"?"16/9":a==="9:16"?"9/16":a==="3:2"?"3/2":"auto";toast("Aspect "+a);renderPreview()}
 function rotate(n){rotation=(rotation+n+360)%360;toast("Rotation "+rotation+"°");renderPreview()}
 function mockup(x){$("mockLabel").textContent=x;const st=$("stage");st.className="stage";if(x==="Smartphone")st.classList.add("mock-phone");if(x==="Laptop")st.classList.add("mock-laptop");if(x==="Circle Frame")st.classList.add("mock-circle");if(x==="Rounded Frame")st.classList.add("mock-rounded");toast(x+" preview applied");renderPreview()}
-function openTool(id,b){document.querySelectorAll("#bottomPanel [id^='tool_']").forEach(x=>x.hidden=true);const panel=$("tool_"+id);if(!panel)return toast("Tool panel not found");panel.hidden=false;document.querySelectorAll(".bottomMenu button").forEach(x=>x.classList.remove("active"));if(b)b.classList.add("active");panel.scrollIntoView({behavior:"smooth",block:"nearest"})}
+function openTool(id,b){
+  const panels=document.querySelectorAll("#bottomPanel [id^='tool_']");
+  panels.forEach(p=>{p.hidden=true;p.style.display="none"});
+  const panel=document.getElementById("tool_"+id);
+  if(!panel){toast("Panel unavailable");return}
+  panel.hidden=false;panel.style.display="block";
+  document.querySelectorAll(".bottomMenu button").forEach(x=>x.classList.remove("active"));
+  if(b)b.classList.add("active");
+}
+document.addEventListener("DOMContentLoaded",()=>{
+  document.querySelectorAll(".bottomMenu button").forEach(btn=>{
+    btn.addEventListener("click",e=>{
+      const m=btn.getAttribute("onclick")||"";
+      const match=m.match(/openTool\('([^']+)'/);
+      if(match){e.preventDefault();openTool(match[1],btn)}
+    });
+  });
+  openTool("tools",document.querySelector(".bottomMenu button"));
+});
 function renderPreview(){if(!file)return;const v=id=>Number($(id)?.value||0);let b=v("brightness"),c=v("contrast"),sat=v("saturation"),temp=v("temperature"),tint=v("tint"),vib=v("vibrance"),sharp=v("sharpness"),clar=v("clarity"),selSat=v("selSat");let filters=[];filters.push("brightness("+Math.round(b*100)+"%)","contrast("+Math.round(c*100)+"%)","saturate("+Math.round(sat*vib*100)+"%)");if(temp>0)filters.push("sepia("+Math.min(45,temp*.35)+"%)");else if(temp<0)filters.push("hue-rotate("+Math.abs(temp)*.18+"deg)");if(tint)filters.push("hue-rotate("+(tint*.25)+"deg)");if(sharp>0)filters.push("contrast("+(100+sharp*2)+"%)");if(clar>0)filters.push("contrast("+(100+clar*.35)+"%)","saturate("+(100+clar*.12)+"%)");if(flags.retouch)filters.push("brightness(105%)","saturate(105%)");if(flags.duotone)filters.push("grayscale(65%)","sepia(70%)","hue-rotate(8deg)");const preset={vintage:["sepia(35%)","contrast(92%)"],retro:["sepia(22%)","saturate(125%)","contrast(105%)"],mono:["grayscale(100%)"],warm:["sepia(18%)","saturate(115%)"],cool:["hue-rotate(180deg)","saturate(105%)"]};if(preset[filterName])filters.push(...preset[filterName]);$("preview").style.filter=filters.join(" ");$("preview").style.transform="rotate("+(v("angle")+rotation)+"deg) scaleX("+(flags.flop?-1:1)+") scaleY("+(flags.flip?-1:1)+")";const st=$("stage");st.classList.toggle("vig",flags.vignette);st.style.setProperty("--vig",(v("vignetteAmount")/100).toFixed(2));st.classList.toggle("glow",v("glow")>0);st.classList.toggle("shadow",v("shadow")>0);$("liveBadge").textContent="● LIVE PREVIEW";}
 async function save(format){if(!file)return toast("Choose a photo first");const fd=new FormData();fd.append("image",file);for(const id of ["width","height","brightness","contrast","highlights","shadows","whites","blacks","temperature","tint","vibrance","saturation","sharpness","clarity","vignetteAmount","shadow","glow","outline"])if($(id))fd.append(id,$(id).value);fd.append("vignette",flags.vignette);fd.append("bokeh",flags.bokeh);fd.append("retouch",flags.retouch);fd.append("duotone",flags.duotone);fd.append("rotate",Number($("angle").value)+rotation);fd.append("flip",flags.flip);fd.append("flop",flags.flop);fd.append("filter",filterName);fd.append("format",format);toast("Processing advanced edit…");const r=await fetch("/api/edit",{method:"POST",body:fd});if(!r.ok){let d={};try{d=await r.json()}catch{}return toast(d.error||"Edit failed")}const blob=await r.blob(),a=document.createElement("a");a.href=URL.createObjectURL(blob);a.download="snapscale-"+Date.now()+"."+format;a.click();toast("Export ready")}
 function loginMode(role){$("loginForm").innerHTML='<div class="field"><label>Username</label><input id="u" placeholder="'+(role==="admin"?"Admin username":"Your username")+'"></div><div class="field"><label>Password</label><input id="p" type="password" placeholder="Password"></div><button class="btn primary" style="width:100%" onclick="doLogin(\''+role+'\')">Login</button>'}
