@@ -194,3 +194,68 @@
     window.addText=addText;window.addShape=addShape;window.deleteActive=deleteActive;window.duplicateActive=duplicateActive;window.toggleLock=toggleLock;window.setOpacity=setOpacity;window.startBrush=startBrush;window.stopBrush=stopBrush;
   });
 })();
+
+/* SnapScale editor reliability patch v4.1 */
+(() => {
+  const $=id=>document.getElementById(id);
+  const toast=m=>window.toast?window.toast(m):console.log(m);
+  const getCanvas=()=>window.ssCanvas;
+  function imageTarget(){const c=getCanvas();if(!c)return null;const a=c.getActiveObject();return a&&a.type==="image"?a:c.getObjects().find(o=>o.role==="background"&&o.type==="image")||null}
+  function filterValue(id){
+    const el=$(id); if(!el)return 0;
+    const v=Number(el.value||0);
+    if(id==="brightness"||id==="contrast"||id==="saturation"||id==="vibrance") return v-1;
+    if(id==="exposure") return v/100;
+    if(id==="blur") return v/100;
+    if(id==="hue") return v/180;
+    return v/100;
+  }
+  function applyAdjust(id){
+    const c=getCanvas(),o=imageTarget(); if(!c||!o)return;
+    const map={brightness:"brightness",contrast:"contrast",saturation:"saturation",vibrance:"saturation",blur:"blur",hue:"hue"};
+    const type=map[id]; if(!type)return;
+    let value=filterValue(id);
+    if(id==="vibrance") value*=0.55;
+    if(id==="blur") value=Math.min(.8,Math.max(0,value));
+    if(id==="hue") value*=Math.PI;
+    const F=window.fabric?.filters;if(!F)return;
+    const classes={brightness:F.Brightness,contrast:F.Contrast,saturation:F.Saturation,blur:F.Blur,hue:F.HueRotation};
+    const Cls=classes[type]; if(!Cls)return;
+    o.filters=(o.filters||[]).filter(f=>!["Brightness","Contrast","Saturation","Blur","HueRotation"].includes(f?.type));
+    if(Math.abs(value)>0.0001){
+      const opts=type==="blur"?{blur:value}:type==="hue"?{rotation:value}:{[type]:value};
+      o.filters.push(new Cls(opts));
+    }
+    o.applyFilters();c.requestRenderAll();
+  }
+  const oldFilter=window.filter;
+  window.filter=(f)=>{
+    const c=getCanvas(),o=imageTarget();if(!c||!o){toast("Upload photo first");return}
+    const F=window.fabric.filters;
+    const map={mono:[F.Grayscale,{}],vintage:[F.Sepia,{alpha:0.45}],retro:[F.Saturation,{saturation:.35}],warm:[F.Sepia,{alpha:.25}],cool:[F.HueRotation,{rotation:.55}]};
+    const item=map[f];
+    o.filters=(o.filters||[]).filter(x=>!["Grayscale","Sepia","Saturation","HueRotation"].includes(x?.type));
+    if(item)o.filters.push(new item[0](item[1]));
+    o.applyFilters();c.requestRenderAll(); if(window.pushHistory)window.pushHistory(); toast(f==="mono"?"Black & White":f+" applied");
+  };
+  window.renderPreview=()=>{const c=getCanvas();if(c){c.requestRenderAll();toast("Live preview updated")}};
+  window.save=async(fmt)=>{
+    const c=getCanvas();if(!c){toast("Editor not ready");return}
+    const q=Number($("quality")?.value||90)/100;
+    const format=fmt==="jpg"?"jpeg":fmt;
+    const a=document.createElement("a");
+    a.href=c.toDataURL({format,quality:q,multiplier:1});
+    a.download="snapscale-"+Date.now()+"."+((format==="jpeg")?"jpg":format);
+    a.click();toast("Export ready");
+  };
+  window.addText=window.addText||(()=>toast("Text tool loading…"));
+  document.addEventListener("DOMContentLoaded",()=>{
+    const ids=["brightness","contrast","saturation","vibrance","blur","hue","exposure"];
+    ids.forEach(id=>$(id)?.addEventListener("input",()=>applyAdjust(id)));
+    document.querySelectorAll("[data-live]").forEach(el=>{
+      const id=el.id;
+      el.addEventListener("input",()=>{const v=$(id+"V");if(v)v.textContent=el.value;});
+    });
+    setTimeout(()=>{const c=getCanvas();if(c)c.requestRenderAll()},700);
+  });
+})();
