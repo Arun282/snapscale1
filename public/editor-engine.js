@@ -59,8 +59,8 @@
       baseImage=imgEl;
       canvas.clear();
       const scale=Math.min(canvas.width/imgEl.width,canvas.height/imgEl.height);
-      const img=new fabric.FabricImage(imgEl,{left:canvas.width/2,top:canvas.height/2,originX:"center",originY:"center",scaleX:scale,scaleY:scale,selectable:false,evented:false,name:"Background",role:"background"});
-      canvas.add(img); canvas.sendObjectToBack(img);
+      const img=new fabric.FabricImage(imgEl,{left:canvas.width/2,top:canvas.height/2,originX:"center",originY:"center",scaleX:scale,scaleY:scale,selectable:true,evented:true,name:"Background",role:"background"});
+      canvas.add(img); canvas.sendObjectToBack(img); canvas.setActiveObject(img);
       canvas.backgroundColor="#101522";
       canvas.requestRenderAll(); history=[];histPos=-1;pushHistory();
       URL.revokeObjectURL(url);
@@ -91,7 +91,7 @@
   }
 
   function setFilter(type,value){
-    const o=active(); if(!o || o.type!=="image") return toast2("Select an image layer");
+    const o=active() || baseImage; if(!o || o.type!=="image") return toast2("Select an image layer");
     const filters=[];
     if(type==="grayscale")filters.push(new fabric.filters.Grayscale());
     if(type==="sepia")filters.push(new fabric.filters.Sepia());
@@ -107,7 +107,7 @@
   function applySelectedAdjust(id){
     const v=Number($(id)?.value||0); const o=active()||baseImage;
     if(!canvas||!o)return;
-    if(active()?.type==="image"){
+    if((active()?.type==="image") || baseImage){
       const map={brightness:["brightness",v],contrast:["contrast",v],saturation:["saturation",v],blur:["blur",v]};
       if(map[id])setFilter(map[id][0],map[id][1]);
     }
@@ -153,7 +153,20 @@
     if(id==="cutout")stopBrush();
   };
 
-  window.aspect=(ratio)=>{if(!canvas)return; const [rw,rh]=ratio.split(":").map(Number);const target=canvas.height*rw/rh;canvas.setWidth(target);resizeCanvas();pushHistory();toast2("Canvas ratio "+ratio)};
+  window.aspect=(ratio)=>{
+    if(!canvas)return;
+    const [rw,rh]=ratio.split(":").map(Number);
+    if(!rw||!rh)return;
+    const currentW=canvas.width,currentH=canvas.height,currentAR=currentW/currentH,targetAR=rw/rh;
+    let nw=currentW,nh=currentH;
+    if(targetAR>currentAR) nw=currentH*targetAR; else nh=currentW/targetAR;
+    canvas.setDimensions({width:Math.round(nw),height:Math.round(nh)});
+    if(baseImage){
+      const obj=canvas.getObjects().find(x=>x.role==="background");
+      if(obj){obj.set({left:nw/2,top:nh/2});}
+    }
+    canvas.requestRenderAll();pushHistory();toast2("Canvas ratio "+ratio);
+  };
   window.rotate=(deg)=>{const o=active();if(o){o.rotate((o.angle||0)+deg);canvas.requestRenderAll();pushHistory()}else toast2("Select an object/photo first")};
   window.toggle=(name)=>{
     if(name==="flip"){const o=active();if(o){o.set("flipY",!o.flipY);canvas.requestRenderAll();pushHistory()}}
