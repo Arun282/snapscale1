@@ -60,8 +60,8 @@ app.post("/api/edit",upload.single("image"),async(req,res)=>{
   const toneGain=1+(highlights+whites)*0.0015;
   const toneOffset=(shadows-blacks)*0.55;
   img=img.linear(toneGain,toneOffset);
-  if(fade>0) img=img.tint("#ffffff",{atop:true}).modulate({brightness:1+fade/500,saturation:1-fade/250});
-  if(grain>0) img=img.noise({type:"gaussian",mean:0,variance:Math.min(50,grain*.35)});
+  if(fade>0) img=img.linear(1-fade/500,fade*0.5).modulate({saturation:1-fade/250});
+  if(grain>0) img=img.noise({type:"gaussian",mean:0,sigma:Math.min(50,grain*.35)});
 
   if(temp>5) img=img.tint("#fff2dc");
   else if(temp<-5) img=img.tint("#dcecff");
