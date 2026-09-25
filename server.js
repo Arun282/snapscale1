@@ -24,7 +24,7 @@ const n=(v,d=0)=>Number.isFinite(Number(v))?Number(v):d;
 function clamp(v,a,b){return Math.max(a,Math.min(b,v))}
 function esc(s){return String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/"/g,"&quot;")}
 
-app.get("/api/health",(req,res)=>res.json({ok:true,name:"SnapScale Server",version:"3.0.0",advancedEditor:true}));
+app.get("/api/health",(req,res)=>res.json({ok:true,name:"SnapScale Server",version:"3.1.0",advancedEditor:true,processing:"sharp",online:true}));
 app.post("/api/auth/admin",(req,res)=>{const {username,password}=req.body||{};if(username!==ADMIN_USERNAME||!verifyAdmin(password))return res.status(401).json({error:"Invalid admin credentials"});res.json({token:token(username,"admin"),user:{username,role:"admin"}})});
 app.post("/api/auth/register",(req,res)=>{const {username}=req.body||{};if(!username||username.length<3)return res.status(400).json({error:"Username required"});res.json({token:token(username,"user"),user:{username,role:"user"}})});
 app.post("/api/auth/login",(req,res)=>{const {username}=req.body||{};if(!username)return res.status(400).json({error:"Username required"});res.json({token:token(username,"user"),user:{username,role:"user"}})});
@@ -42,13 +42,26 @@ app.post("/api/edit",upload.single("image"),async(req,res)=>{
   img=img.resize(w,h,{fit:q.crop==="fill"?"cover":"inside",position:"centre"});
 
   const brightness=clamp(n(q.brightness,1),0.1,3);
+  const exposure=clamp(n(q.exposure,0),-100,100);
+  const fade=clamp(n(q.fade,0),0,100);
+  const grain=clamp(n(q.grain,0),0,100);
   const saturation=clamp(n(q.saturation,1),0,3);
   const contrast=clamp(n(q.contrast,1),0.1,3);
   const vibrance=clamp(n(q.vibrance,1),0,3);
   const temp=clamp(n(q.temperature,0),-100,100);
   const tint=clamp(n(q.tint,0),-100,100);
-  img=img.modulate({brightness,saturation:saturation*vibrance});
+  img=img.modulate({brightness:brightness*Math.pow(2,exposure/100),saturation:saturation*vibrance});
   img=img.linear(contrast,128*(1-contrast));
+  // Tone controls are approximated with gamma/linear transforms for reliable server-side output.
+  const highlights=clamp(n(q.highlights,0),-100,100);
+  const shadows=clamp(n(q.shadows,0),-100,100);
+  const whites=clamp(n(q.whites,0),-100,100);
+  const blacks=clamp(n(q.blacks,0),-100,100);
+  const toneGain=1+(highlights+whites)*0.0015;
+  const toneOffset=(shadows-blacks)*0.55;
+  img=img.linear(toneGain,toneOffset);
+  if(fade>0) img=img.tint("#ffffff",{atop:true}).modulate({brightness:1+fade/500,saturation:1-fade/250});
+  if(grain>0) img=img.noise({type:"gaussian",mean:0,variance:Math.min(50,grain*.35)});
 
   if(temp>5) img=img.tint("#fff2dc");
   else if(temp<-5) img=img.tint("#dcecff");
@@ -56,11 +69,13 @@ app.post("/api/edit",upload.single("image"),async(req,res)=>{
   else if(tint<-8) img=img.tint("#dcfff0");
 
   const filter=q.filter||"none";
+  const hue=clamp(n(q.hue,0),-180,180);
   if(filter==="mono") img=img.grayscale();
   if(filter==="vintage") img=img.modulate({saturation:.72,brightness:1.04}).tint("#e9d1a0");
   if(filter==="retro") img=img.modulate({saturation:.82,brightness:1.06}).tint("#f0b77b");
   if(filter==="warm") img=img.tint("#ffe2bd");
   if(filter==="cool") img=img.tint("#cfe4ff");
+  if(hue) img=img.modulate({hue:hue});
 
   const sharpness=clamp(n(q.sharpness,0),0,10);
   if(sharpness>0) img=img.sharpen({sigma:clamp(.6+sharpness*.35,.6,3)});
