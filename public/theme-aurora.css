@@ -42,3 +42,38 @@ body:before{display:block!important;opacity:.16!important;background-image:linea
 .brand span{background:linear-gradient(90deg,#a855f7,#22d3ee)!important;-webkit-background-clip:text!important;background-clip:text!important;color:transparent!important}
 .row input[type=range]{accent-color:#8b5cf6!important}.row input[type=range]::-webkit-slider-thumb{box-shadow:0 0 0 5px #8b5cf622,0 0 15px #8b5cf6aa!important}
 @media(max-width:600px){body{background-position:center top!important;background-attachment:scroll!important}.main{padding-bottom:105px!important}.bottomEditor{background:rgba(5,9,18,.9)!important}}
+
+/* Final Neon Leaf Studio layout */
+html,body{background:#03050a!important;color:#f5f7ff!important}
+body{background-image:linear-gradient(rgba(2,5,10,.78),rgba(2,5,10,.84)),url("https://w0.peakpx.com/wallpaper/348/375/HD-wallpaper-nature-in-black-all-themes-theme-abstract-popular.jpg")!important;background-size:cover!important;background-position:center top!important;background-attachment:fixed!important}
+.top{background:rgba(4,7,14,.76)!important;border-bottom:1px solid #7c3aed44!important;backdrop-filter:blur(20px)!important}
+.layout{grid-template-columns:230px 1fr!important}
+.layout aside{background:rgba(4,7,14,.68)!important;border-right:1px solid #7c3aed33!important}
+.main{max-width:1700px!important;padding:24px!important}
+.hero{margin-bottom:14px!important}
+.hero h1{color:#fff!important;text-shadow:0 4px 30px #000!important}
+.card{background:linear-gradient(145deg,rgba(7,14,27,.86),rgba(3,7,15,.78))!important;border:1px solid #8b5cf655!important;box-shadow:0 25px 80px #000a,0 0 35px #6d28d91c!important;backdrop-filter:blur(20px)!important}
+.editorgrid{display:grid!important;grid-template-columns:minmax(0,1fr) 410px!important;gap:16px!important;align-items:start!important}
+.editorgrid>.card:nth-child(1){min-width:0!important}
+.editorgrid>.bottomEditor{position:sticky!important;top:84px!important;bottom:auto!important;margin:0!important;max-height:calc(100vh - 100px)!important;overflow:auto!important;border-radius:18px!important}
+.bottomEditor{background:linear-gradient(145deg,rgba(8,14,28,.92),rgba(4,8,17,.88))!important;border:1px solid #8b5cf655!important;backdrop-filter:blur(22px)!important}
+.bottomMenu{display:grid!important;grid-template-columns:repeat(3,1fr)!important;gap:7px!important;overflow:visible!important}
+.bottomMenu button{min-width:0!important;background:#ffffff06!important;border:1px solid #ffffff10!important;color:#dfe5f7!important}
+.bottomMenu button.active{background:linear-gradient(135deg,#7c3aed,#2563eb)!important;color:#fff!important;border-color:#a78bfa!important;box-shadow:0 0 24px #7c3aed55!important}
+.toolview{padding-top:14px!important}
+.stage{min-height:calc(100vh - 230px)!important;background:rgba(0,0,0,.32)!important;border:1px solid #22d3ee25!important}
+.upload{background:linear-gradient(135deg,#7c3aed,#2563eb)!important}
+.btn.primary{background:linear-gradient(135deg,#7c3aed,#2563eb)!important}
+.pill{background:#0b1220cc!important;border-color:#8b5cf655!important;color:#dfe5ff!important}
+.livebadge{background:#07141ae8!important;border-color:#22d3ee55!important;color:#75f6e1!important}
+@media(max-width:1000px){
+ .editorgrid{grid-template-columns:1fr!important}
+ .editorgrid>.bottomEditor{position:sticky!important;top:auto!important;bottom:8px!important;max-height:none!important;margin-top:12px!important}
+}
+@media(max-width:600px){
+ .main{padding:12px 10px 105px!important}
+ .stage{min-height:390px!important}
+ .bottomMenu{display:flex!important;overflow:auto!important}
+ .bottomMenu button{min-width:82px!important}
+ .editorgrid>.bottomEditor{position:fixed!important;left:8px!important;right:8px!important;bottom:8px!important;z-index:30!important}
+}
