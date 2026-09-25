@@ -1,30 +1,31 @@
-/* SnapScale — Picsart-inspired light creative editor theme */
-:root{--bg:#fff;--surface:#fff;--surface2:#f7f7fa;--text:#25252b;--muted:#73737c;--line:#e7e7eb;--accent:#ff2d8d;--accent2:#ff4f9f}
-html,body{background:#fff!important;color:var(--text)!important}
-body{background:linear-gradient(180deg,#fff 0%,#fafafd 55%,#fff 100%)!important}
+/* SnapScale — Canva-inspired light creative workspace */
+:root{--bg:#f3f3f8;--surface:#fff;--surface2:#f7f7fb;--text:#22232b;--muted:#6e707b;--line:#e4e4ec;--purple:#7d2ae8;--purple2:#8b3dff;--blue:#00c4cc}
+html,body{min-height:100%;background:#f3f3f8!important;color:var(--text)!important}
+body{background:#f3f3f8!important}
 body:before,body:after{display:none!important}
-.top{background:#fff!important;border-bottom:1px solid #ededf1!important;box-shadow:0 1px 12px #00000008!important;backdrop-filter:none!important}
-.brand span{background:linear-gradient(90deg,#ff2d8d,#ff4f9f,#ff7a59);-webkit-background-clip:text;background-clip:text;color:transparent}
-.brand small{background:#fff0f7!important;border:1px solid #ffd0e6!important;color:#e5267d!important}
-.layout aside{background:#fff!important;border-right:1px solid #ededf1!important;backdrop-filter:none!important}
-.nav button{color:#65656d!important;border-radius:12px!important}
-.nav button:hover{background:#f8f8fa!important;border-color:#e5e5ea!important}
-.nav button.active{background:#fff0f7!important;border-color:#ffd1e5!important;box-shadow:inset 3px 0 #ff2d8d,0 4px 14px #ff2d8d10!important;color:#e42379!important}
-.card{background:#fff!important;border:1px solid #e6e6eb!important;box-shadow:0 8px 30px #20202b0b!important;backdrop-filter:none!important}
-.stage{background:repeating-conic-gradient(#f5f5f7 0 25%,#fff 0 50%) 50%/24px 24px!important;border:1px solid #e0e0e5!important;box-shadow:0 12px 40px #20202b12!important}
-.stage:after{border-color:#cfcfd733!important}
-.upload{background:linear-gradient(135deg,#ff2d8d,#ff4f9f)!important;color:#fff!important;border:0!important;box-shadow:0 8px 24px #ff2d8d30!important}
-.btn{background:#fff!important;border:1px solid #dedee4!important;color:#34343b!important;box-shadow:0 2px 7px #00000008!important}
-.btn:hover{border-color:#ff9fc4!important;background:#fff8fb!important;box-shadow:0 6px 18px #ff2d8d12!important}
-.btn.primary{background:linear-gradient(135deg,#ff2d8d,#ff4f9f)!important;color:#fff!important;border:0!important}
-.bottomEditor{background:#fff!important;border:1px solid #dedee5!important;box-shadow:0 -8px 30px #1f1f2b12!important;backdrop-filter:none!important}
-.bottomMenu{gap:8px!important}
-.bottomMenu button{background:#fff!important;border:1px solid transparent!important;color:#56565f!important;border-radius:12px!important}
-.bottomMenu button:hover{background:#faf0f5!important;border-color:#ffd4e6!important}
-.bottomMenu button.active{background:#ffedf6!important;color:#e52379!important;border-color:#ffc5dd!important;box-shadow:none!important}
-.row input[type=range]{accent-color:#ff2d8d!important}
-.pill,.chip{background:#fafafd!important;border:1px solid #e4e4e9!important;color:#60606a!important}
-.livebadge{background:#fff1f7!important;border:1px solid #ffc5dd!important;color:#e52379!important}
-#toast{background:#fff!important;border:1px solid #ffc5dd!important;color:#303038!important;box-shadow:0 8px 30px #0002!important}
-h1,h2,h3{letter-spacing:-.02em}
-.sectioncards .card:hover{transform:translateY(-2px);transition:.2s;border-color:#ffc1da!important}
+.top{height:64px!important;background:#fff!important;border-bottom:1px solid #e4e4ec!important;box-shadow:0 1px 8px #0000000a!important;backdrop-filter:none!important}
+.brand span{background:linear-gradient(90deg,#7d2ae8,#00a9b3);-webkit-background-clip:text;background-clip:text;color:transparent}
+.brand small{background:#f2eaff!important;border:1px solid #dfc9ff!important;color:#7023cf!important}
+.layout aside{background:#fff!important;border-right:1px solid #e4e4ec!important;backdrop-filter:none!important}
+.nav{padding:12px 10px!important}
+.nav button{color:#555761!important;border-radius:10px!important;margin:3px 0!important}
+.nav button:hover{background:#f4efff!important;border-color:#e2d3ff!important}
+.nav button.active{background:#eee5ff!important;border-color:#d8bdff!important;box-shadow:inset 3px 0 #7d2ae8!important;color:#6420b9!important}
+.card{background:#fff!important;border:1px solid #e3e3ea!important;border-radius:14px!important;box-shadow:0 4px 18px #2525350c!important;backdrop-filter:none!important}
+.stage{background:#e9e9ee!important;border:0!important;border-radius:10px!important;box-shadow:0 3px 20px #20202b18!important}
+.stage:after{border-color:#c8c8d055!important}
+.upload{background:linear-gradient(135deg,#7d2ae8,#8b3dff)!important;color:#fff!important;border:0!important;box-shadow:0 7px 20px #7d2ae830!important}
+.btn{background:#fff!important;border:1px solid #dcdce5!important;color:#30313a!important;border-radius:9px!important;box-shadow:0 1px 4px #00000008!important}
+.btn:hover{background:#f8f5ff!important;border-color:#cdb1f7!important}
+.btn.primary{background:linear-gradient(135deg,#7d2ae8,#8b3dff)!important;color:#fff!important;border:0!important}
+.bottomEditor{background:#fff!important;border:1px solid #dedee7!important;border-radius:16px 16px 0 0!important;box-shadow:0 -6px 25px #24243414!important;backdrop-filter:none!important}
+.bottomMenu{gap:6px!important}
+.bottomMenu button{background:transparent!important;border:1px solid transparent!important;color:#4f5059!important;border-radius:9px!important}
+.bottomMenu button:hover{background:#f3edff!important;border-color:#e1d0ff!important}
+.bottomMenu button.active{background:#eee5ff!important;color:#7024c8!important;border-color:#d7c0fb!important;box-shadow:none!important}
+.row input[type=range]{accent-color:#7d2ae8!important}
+.pill,.chip{background:#f6f5f9!important;border:1px solid #e2e1e8!important;color:#5d5e68!important}
+.livebadge{background:#ecfff9!important;border:1px solid #b7ecd9!important;color:#16865f!important}
+#toast{background:#fff!important;border:1px solid #d9c2fa!important;color:#30313a!important;box-shadow:0 8px 25px #0002!important}
+.sectioncards .card:hover{transform:translateY(-1px);transition:.2s;border-color:#cdb0f6!important}
+h1,h2,h3{letter-spacing:-.025em}
