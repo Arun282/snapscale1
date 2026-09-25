@@ -1,30 +1,30 @@
-/* SnapScale Photo Studio Light Theme */
-:root{--bg:#f6f8fc;--surface:rgba(255,255,255,.92);--surface2:#fff;--text:#172033;--muted:#68738a;--line:#dfe5ef;--a:#ffb800;--a2:#ff7a18;--ok:#20a56a}
-html,body{min-height:100%;background:#f6f8fc!important}
-body{color:var(--text)!important;background:radial-gradient(900px 500px at 10% 0%,#fff5cf,transparent 60%),radial-gradient(800px 520px at 100% 5%,#ffe3d2,transparent 58%),linear-gradient(135deg,#fbfcff,#eef3f9)!important;background-attachment:fixed!important}
-body:before{content:"";position:fixed;inset:0;pointer-events:none;z-index:-1;background-image:linear-gradient(rgba(30,50,80,.035) 1px,transparent 1px),linear-gradient(90deg,rgba(30,50,80,.035) 1px,transparent 1px);background-size:38px 38px}
-body:after{content:"";position:fixed;width:500px;height:500px;right:-180px;bottom:-220px;border-radius:50%;background:#ffd36a55;filter:blur(90px);pointer-events:none;z-index:-1}
-.top{background:rgba(255,255,255,.86)!important;border-bottom:1px solid #e4e8f0!important;backdrop-filter:blur(20px)!important;box-shadow:0 8px 35px #71809a18!important}
-.brand span{background:linear-gradient(90deg,#f59e0b,#ff7a18);-webkit-background-clip:text;background-clip:text;color:transparent}
-.brand small{background:#fff5d6!important;border-color:#ffd66b!important;color:#9a6700!important}
-.layout aside{background:rgba(255,255,255,.78)!important;border-right:1px solid #e2e7ef!important;backdrop-filter:blur(18px)!important}
-.nav button{color:#667085!important}
-.nav button:hover{background:#fff8e8!important;border-color:#ffd66b!important}
-.nav button.active{background:linear-gradient(100deg,#fff0bd,#fff7e8)!important;border-color:#ffc83d!important;box-shadow:inset 3px 0 #ffb800,0 8px 24px #b7790018!important;color:#8a5a00!important}
-.card{background:rgba(255,255,255,.90)!important;border:1px solid #e1e6ef!important;box-shadow:0 18px 55px #52627a18,inset 0 1px #fff!important;backdrop-filter:blur(18px)!important}
-.stage{background:linear-gradient(145deg,#ffffff,#e9eef5)!important;border:1px solid #d8e0eb!important;box-shadow:inset 0 0 90px #9aa9bd18,0 18px 55px #52627a20!important}
-.stage:after{border-color:#aab6c733!important}
-.upload{background:linear-gradient(135deg,#ffb800,#ff7a18)!important;color:#fff!important;box-shadow:0 12px 30px #ff9d2538!important}
-.btn{background:linear-gradient(145deg,#fff,#f3f6fa)!important;border-color:#dce2eb!important;color:#293449!important}
-.btn:hover{border-color:#ffc83d!important;box-shadow:0 8px 24px #52627a1c!important}
-.btn.primary{background:linear-gradient(135deg,#ffb800,#ff7a18)!important;color:#fff!important;border-color:transparent!important;box-shadow:0 10px 28px #ff9d2538!important}
-.bottomEditor{background:rgba(255,255,255,.94)!important;border:1px solid #dfe5ee!important;backdrop-filter:blur(24px)!important;box-shadow:0 18px 60px #52627a2b!important}
-.bottomMenu button{background:#f7f9fc!important;border-color:#e0e5ed!important;color:#455066!important}
-.bottomMenu button:hover{border-color:#ffc83d!important;box-shadow:0 7px 20px #52627a18!important}
-.bottomMenu button.active{background:linear-gradient(135deg,#ffb800,#ff7a18)!important;color:#fff!important;border-color:transparent!important;box-shadow:0 9px 25px #ff9d2540!important}
-.row input[type=range]{accent-color:#ffb800!important}
-.pill,.chip{background:#fff8e8!important;border-color:#ffd66b!important;color:#805800!important}
-.livebadge{background:#f2fff8!important;border-color:#8edab7!important;color:#168657!important}
-#toast{background:rgba(255,255,255,.96)!important;border:1px solid #ffc83d!important;backdrop-filter:blur(15px)!important;color:#263248!important}
-h1,h2,h3{letter-spacing:-.025em}
-.sectioncards .card:hover{transform:translateY(-2px);transition:.2s;border-color:#ffc83d!important}
+/* SnapScale — Picsart-inspired light creative editor theme */
+:root{--bg:#fff;--surface:#fff;--surface2:#f7f7fa;--text:#25252b;--muted:#73737c;--line:#e7e7eb;--accent:#ff2d8d;--accent2:#ff4f9f}
+html,body{background:#fff!important;color:var(--text)!important}
+body{background:linear-gradient(180deg,#fff 0%,#fafafd 55%,#fff 100%)!important}
+body:before,body:after{display:none!important}
+.top{background:#fff!important;border-bottom:1px solid #ededf1!important;box-shadow:0 1px 12px #00000008!important;backdrop-filter:none!important}
+.brand span{background:linear-gradient(90deg,#ff2d8d,#ff4f9f,#ff7a59);-webkit-background-clip:text;background-clip:text;color:transparent}
+.brand small{background:#fff0f7!important;border:1px solid #ffd0e6!important;color:#e5267d!important}
+.layout aside{background:#fff!important;border-right:1px solid #ededf1!important;backdrop-filter:none!important}
+.nav button{color:#65656d!important;border-radius:12px!important}
+.nav button:hover{background:#f8f8fa!important;border-color:#e5e5ea!important}
+.nav button.active{background:#fff0f7!important;border-color:#ffd1e5!important;box-shadow:inset 3px 0 #ff2d8d,0 4px 14px #ff2d8d10!important;color:#e42379!important}
+.card{background:#fff!important;border:1px solid #e6e6eb!important;box-shadow:0 8px 30px #20202b0b!important;backdrop-filter:none!important}
+.stage{background:repeating-conic-gradient(#f5f5f7 0 25%,#fff 0 50%) 50%/24px 24px!important;border:1px solid #e0e0e5!important;box-shadow:0 12px 40px #20202b12!important}
+.stage:after{border-color:#cfcfd733!important}
+.upload{background:linear-gradient(135deg,#ff2d8d,#ff4f9f)!important;color:#fff!important;border:0!important;box-shadow:0 8px 24px #ff2d8d30!important}
+.btn{background:#fff!important;border:1px solid #dedee4!important;color:#34343b!important;box-shadow:0 2px 7px #00000008!important}
+.btn:hover{border-color:#ff9fc4!important;background:#fff8fb!important;box-shadow:0 6px 18px #ff2d8d12!important}
+.btn.primary{background:linear-gradient(135deg,#ff2d8d,#ff4f9f)!important;color:#fff!important;border:0!important}
+.bottomEditor{background:#fff!important;border:1px solid #dedee5!important;box-shadow:0 -8px 30px #1f1f2b12!important;backdrop-filter:none!important}
+.bottomMenu{gap:8px!important}
+.bottomMenu button{background:#fff!important;border:1px solid transparent!important;color:#56565f!important;border-radius:12px!important}
+.bottomMenu button:hover{background:#faf0f5!important;border-color:#ffd4e6!important}
+.bottomMenu button.active{background:#ffedf6!important;color:#e52379!important;border-color:#ffc5dd!important;box-shadow:none!important}
+.row input[type=range]{accent-color:#ff2d8d!important}
+.pill,.chip{background:#fafafd!important;border:1px solid #e4e4e9!important;color:#60606a!important}
+.livebadge{background:#fff1f7!important;border:1px solid #ffc5dd!important;color:#e52379!important}
+#toast{background:#fff!important;border:1px solid #ffc5dd!important;color:#303038!important;box-shadow:0 8px 30px #0002!important}
+h1,h2,h3{letter-spacing:-.02em}
+.sectioncards .card:hover{transform:translateY(-2px);transition:.2s;border-color:#ffc1da!important}
