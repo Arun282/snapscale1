@@ -66,6 +66,9 @@ app.post("/api/edit",upload.single("image"),async(req,res)=>{
 app.get("/api/admin/stats",admin,(req,res)=>res.json({server:"Healthy",editor:"Online",auth:"JWT",storage:"Local processing",ai:"Disabled by design",features:["Canvas Layers","Text","Stickers","Shapes","Drawing","Eraser","Crop","Aspect Ratio","Resize","Rotate","Flip","Perspective UI","Straighten UI","Background Color","Manual Cutout","Manual Brush","Opacity","Lock","Duplicate","50-step Undo/Redo","Zoom","Brightness","Contrast","Highlights","Shadows","Whites","Blacks","Temperature","Tint","Vibrance","Saturation","Sharpness","Clarity","Fade","Exposure","Hue","Vintage","Retro","Mono","Warm","Cool","Blur","Noise","Glow","Drop Shadow","Outline","Frames","JPG","PNG","WebP","Quality","4K Export","Pro"]}));
 
 app.get("*",(req,res)=>{
+ res.set("Cache-Control","no-store, no-cache, must-revalidate, proxy-revalidate");
+ res.set("Pragma","no-cache");
+ res.set("Expires","0");
  const p=path.join(__dirname,"public","index.html");
  fs.readFile(p,"utf8",(err,html)=>{
   if(err)return res.status(500).send("SnapScale unavailable");
