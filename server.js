@@ -24,7 +24,7 @@ const n=(v,d=0)=>Number.isFinite(Number(v))?Number(v):d;
 function clamp(v,a,b){return Math.max(a,Math.min(b,v))}
 function esc(s){return String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/"/g,"&quot;")}
 
-app.get("/api/health",(req,res)=>res.json({ok:true,name:"SnapScale Server",version:"3.1.0",advancedEditor:true,processing:"sharp",online:true}));
+app.get("/api/health",(req,res)=>res.json({ok:true,name:"SnapScale Server",version:"3.2.0",advancedEditor:true,processing:"sharp",online:true}));
 app.post("/api/auth/admin",(req,res)=>{const {username,password}=req.body||{};if(username!==ADMIN_USERNAME||!verifyAdmin(password))return res.status(401).json({error:"Invalid admin credentials"});res.json({token:token(username,"admin"),user:{username,role:"admin"}})});
 app.post("/api/auth/register",(req,res)=>{const {username}=req.body||{};if(!username||username.length<3)return res.status(400).json({error:"Username required"});res.json({token:token(username,"user"),user:{username,role:"user"}})});
 app.post("/api/auth/login",(req,res)=>{const {username}=req.body||{};if(!username)return res.status(400).json({error:"Username required"});res.json({token:token(username,"user"),user:{username,role:"user"}})});
@@ -38,8 +38,11 @@ app.post("/api/edit",upload.single("image"),async(req,res)=>{
   if(q.flip==="true") img=img.flip();
   if(q.flop==="true") img=img.flop();
 
-  const w=clamp(n(q.width,meta.width),1,10000), h=clamp(n(q.height,meta.height),1,10000);
-  img=img.resize(w,h,{fit:q.crop==="fill"?"cover":"inside",position:"centre"});
+  let w=clamp(n(q.width,meta.width),1,10000), h=clamp(n(q.height,meta.height),1,10000);
+  const resolution=String(q.resolution||"original");
+  const targets={ "1080p":[1920,1080], "2K":[2560,1440], "4K":[3840,2160] };
+  if(targets[resolution]){w=targets[resolution][0];h=targets[resolution][1];}
+  img=img.resize({width:w,height:h,fit:"inside",position:"centre",withoutEnlargement:false});
 
   const brightness=clamp(n(q.brightness,1),0.1,3);
   const exposure=clamp(n(q.exposure,0),-100,100);
@@ -105,9 +108,10 @@ app.post("/api/edit",upload.single("image"),async(req,res)=>{
   }
 
   const f=(q.format||"jpeg").toLowerCase();
-  if(f==="png")img=img.png();
-  else if(f==="webp")img=img.webp({quality:92});
-  else img=img.jpeg({quality:92});
+  const quality=clamp(n(q.quality,90),10,100);
+  if(f==="png")img=img.png({compressionLevel:6});
+  else if(f==="webp")img=img.webp({quality});
+  else img=img.jpeg({quality,mozjpeg:quality>=85});
   res.type(f==="png"?"png":f==="webp"?"webp":"jpeg").send(await img.toBuffer());
  }catch(e){res.status(500).json({error:e.message||"Processing failed"})}
 });
